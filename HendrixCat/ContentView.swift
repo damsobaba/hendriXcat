@@ -1,112 +1,47 @@
 import SwiftUI
 import AVFoundation
+import AVKit
 
 struct ContentView: View {
     @State private var rocketPosition: CGFloat = UIScreen.main.bounds.width / 2
     @State private var obstacles: [Obstacle] = []
     @State private var gameOver = false
+    @State private var gameStarted = false // New state to control the game start
     @State private var timer: Timer?
     @State private var speed: CGFloat = 5 // Initial speed
     @State private var timeElapsed: Int = 0 // Time elapsed for speed scaling
     @State private var audioPlayer: AVAudioPlayer? // Audio player instance
     @State private var currentTrackIndex: Int = 0 // Track index
     private let audioTracks = ["space-ship", "chords"] // List of music tracks
-    @State private var backgroundOffset: CGFloat = 0.0
-    @State private var backgroundTimer: Timer? // Timer for the scrolling background
-
+    @State private var bullets: [Bullet] = [] // Bullets fired by the rocket
     var body: some View {
         ZStack {
+            // Static Background
+            Image("space_background")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
 
-            // Dynamic Background
-            GeometryReader { geometry in
-                ZStack {
-                    // Background layers
-                    ForEach(0..<3, id: \.self) { i in
-                        Image("space_background")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .offset(y: backgroundOffset - CGFloat(i) * geometry.size.height)
-                    }
-                }
-                .onAppear {
-                    startBackgroundAnimation(screenHeight: geometry.size.height)
-                }
-            }
-
-            // Game Content
-            if gameOver {
-                VStack {
-                    Text("Game Over")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                        .padding()
-
-                    Text("You lasted \(timeElapsed) seconds!")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .padding()
-
-                    HStack {
-                        Button("Restart") {
-                            resetGame()
-                        }
-                        .font(.title)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-
-                        // Twitter Share Button
-                        Link(destination: twitterShareURL()) {
-                            HStack {
-                                Image(systemName: "square.and.arrow.up")
-                                Text("Share on Twitter")
-                            }
-                            .font(.title)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                        }
-                    }
+            if gameStarted {
+                if gameOver {
+                    GameOverView(timeElapsed: timeElapsed, onRestart: {
+                        resetGame()
+                    })
+                } else {
+                    GameplayView(
+                            rocketPosition: $rocketPosition,
+                            obstacles: $obstacles,
+                            bullets: $bullets,
+                            timeElapsed: timeElapsed,
+                            gameOver: $gameOver,
+                            onCollision: stopGame
+                        )
                 }
             } else {
-                // Rocket
-                RocketView()
-                    .position(x: rocketPosition, y: UIScreen.main.bounds.height * 0.8)
-
-                // Obstacles
-                ForEach(obstacles) { obstacle in
-                    if obstacle.type == .planet {
-                        PlanetObstacleView()
-                            .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                    } else if obstacle.type == .satellite {
-                        SateliteObstacleView()
-                            .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                    }
-                }
-
-                // Score or Time Display
-                Text("Time: \(timeElapsed)")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .position(x: UIScreen.main.bounds.width - 80, y: 40)
-
-                // Level Indicator at the bottom of the screen
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Text("Level: \(timeElapsed)")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.black.opacity(1))
-                            .cornerRadius(10)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.bottom, 1) // Add some padding to place it above the bottom edge
-                    }
-                }
+                StartMenuView(onStart: {
+                    gameStarted = true
+                    startGame()
+                })
             }
         }
         .gesture(
@@ -117,56 +52,12 @@ struct ContentView: View {
                     rocketPosition = min(max(value.location.x, 0), width)
                 }
         )
-        .onAppear(perform: startGame)
-
     }
 
-    func stopBackgroundAnimation() {
-        timer?.invalidate()
-    }
-
-    func startBackgroundAnimation(screenHeight: CGFloat) {
-        backgroundTimer?.invalidate() // Stop any existing timer
-
-        // Scroll background down smoothly
-        backgroundTimer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { _ in
-            withAnimation(.linear(duration: 0.02)) {
-                backgroundOffset += 2 // Adjust scroll speed here
-            }
-
-            // Reset backgroundOffset to loop seamlessly when it goes beyond the screen height
-            if backgroundOffset >= screenHeight {
-                backgroundOffset = 0 // Reset to the top, no gap at the bottom
-            }
-        }
-    }
-
-    func twitterShareURL() -> URL {
-        let message = "I lasted \(timeElapsed) seconds in this amazing space game! 🚀 Check it out! #SpaceGame"
-        let encodedMessage = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let appURL = URL(string: "twitter://post?message=\(encodedMessage)")!
-        let webURL = URL(string: "https://twitter.com/intent/tweet?text=\(encodedMessage)")!
-
-        // Check if Twitter app is installed
-        if UIApplication.shared.canOpenURL(appURL) {
-            return appURL
-        } else {
-            return webURL
-        }
-    }
-
-    func setupAudioPlayer(with trackName: String) {
-        guard let soundURL = Bundle.main.url(forResource: trackName, withExtension: "wav") else {
-            print("Error: Sound file \(trackName) not found.")
-            return
-        }
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            audioPlayer?.delegate = AudioDelegate(handler: onTrackFinished) // Set delegate
-            audioPlayer?.prepareToPlay()
-        } catch {
-            print("Error loading sound file: \(error.localizedDescription)")
-        }
+    // MARK: - Game Logic
+    func fireBullet() {
+        let rocketY = UIScreen.main.bounds.height * 0.8
+        bullets.append(Bullet(xPosition: rocketPosition, yPosition: rocketY - 30))
     }
 
     func startGame() {
@@ -182,13 +73,18 @@ struct ContentView: View {
     }
 
     func resetGame() {
-        backgroundOffset = 0 // Reset offset to start fresh
         rocketPosition = UIScreen.main.bounds.width / 2
-        startGame()
+        gameStarted = false // Show the start menu again
+    }
+
+    func stopGame() {
+        gameOver = true
+        timer?.invalidate() // Stop the timer
+        audioPlayer?.stop() // Stop the music
     }
 
     func updateGame() {
-        guard !gameOver else { return } // Stop updating if the game is over
+        guard !gameOver else { return }
 
         // Increment elapsed time
         timeElapsed += 1
@@ -210,60 +106,193 @@ struct ContentView: View {
         if Int.random(in: 0...10) == 0 {
             let randomType: ObstacleType = Bool.random() ? .planet : .satellite
             obstacles.append(Obstacle(xPosition: CGFloat.random(in: 0...UIScreen.main.bounds.width),
-                                       yPosition: -50,
-                                       type: randomType))
+                                      yPosition: -50,
+                                      type: randomType))
         }
 
         // Check for collisions
         for obstacle in obstacles {
             if checkCollision(with: obstacle) {
-                gameOver = true
-                timer?.invalidate() // Stop the timer
-                audioPlayer?.stop() // Stop the music
-                stopBackgroundAnimation()
+                stopGame()
                 break
+            }
+        }
+        for index in bullets.indices {
+            bullets[index].yPosition -= 10
+        }
+
+        // Remove bullets that go off-screen
+        bullets.removeAll { $0.yPosition < 0 }
+
+        // Check for bullet-obstacle collisions
+        var bulletsToRemove: Set<UUID> = []
+        var obstaclesToRemove: Set<UUID> = []
+
+        for bullet in bullets {
+            for obstacle in obstacles {
+                let bulletFrame = CGRect(x: bullet.xPosition - 5, y: bullet.yPosition - 5, width: 10, height: 10)
+                let obstacleFrame = CGRect(x: obstacle.xPosition - 25, y: obstacle.yPosition - 25, width: 50, height: 50)
+
+                if bulletFrame.intersects(obstacleFrame) {
+                    // Mark the bullet and obstacle for removal
+                    bulletsToRemove.insert(bullet.id)
+                    obstaclesToRemove.insert(obstacle.id)
+                }
+            }
+        }
+
+        // Remove bullets and obstacles after the loops
+        bullets.removeAll { bullet in bulletsToRemove.contains(bullet.id) }
+        obstacles.removeAll { obstacle in obstaclesToRemove.contains(obstacle.id) }
+    }
+
+        func checkCollision(with obstacle: Obstacle) -> Bool {
+            let rocketFrame = CGRect(x: rocketPosition - 20,
+                                     y: UIScreen.main.bounds.height * 0.8 - 20,
+                                     width: 40, height: 40)
+            let obstacleFrame = CGRect(x: obstacle.xPosition - 25,
+                                       y: obstacle.yPosition - 25,
+                                       width: 50, height: 50)
+
+            return rocketFrame.intersects(obstacleFrame)
+        }
+
+        func playNextTrack() {
+            if currentTrackIndex < audioTracks.count {
+                let nextTrack = audioTracks[currentTrackIndex]
+                setupAudioPlayer(with: nextTrack)
+                audioPlayer?.play()
+                currentTrackIndex += 1
+            } else {
+                currentTrackIndex = 0 // Reset to the first track for looping
+            }
+        }
+
+        func setupAudioPlayer(with trackName: String) {
+            guard let soundURL = Bundle.main.url(forResource: trackName, withExtension: "wav") else {
+                print("Error: Sound file \(trackName) not found.")
+                return
+            }
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.delegate = AudioDelegate(handler: playNextTrack)
+                audioPlayer?.prepareToPlay()
+            } catch {
+                print("Error loading sound file: \(error.localizedDescription)")
             }
         }
     }
 
-    func checkCollision(with obstacle: Obstacle) -> Bool {
-        let rocketFrame = CGRect(x: rocketPosition - 20,
-                                 y: UIScreen.main.bounds.height * 0.8 - 20,
-                                 width: 40, height: 40)
-        let obstacleFrame = CGRect(x: obstacle.xPosition - 25,
-                                   y: obstacle.yPosition - 25,
-                                   width: 50, height: 50)
+    // MARK: - Subviews
 
-        return rocketFrame.intersects(obstacleFrame)
-    }
+    struct StartMenuView: View {
+        var onStart: () -> Void
 
-    func playNextTrack() {
-        if currentTrackIndex < audioTracks.count {
-            let nextTrack = audioTracks[currentTrackIndex]
-            setupAudioPlayer(with: nextTrack)
-            audioPlayer?.play()
-            currentTrackIndex += 1
-        } else {
-            currentTrackIndex = 0 // Reset to the first track for looping
+        var body: some View {
+            VStack {
+                Text("Welcome to Space Adventure!")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                    .padding()
+
+                Button(action: {
+                    onStart()
+                }) {
+                    Text("Start Game")
+                        .font(.title)
+                        .padding()
+                        .background(Color.green)
+                        .cornerRadius(10)
+                        .foregroundColor(.white)
+                }
+            }
         }
     }
 
-    func onTrackFinished() {
-        playNextTrack()
+struct GameplayView: View {
+    @Binding var rocketPosition: CGFloat
+    @Binding var obstacles: [Obstacle]
+    @Binding var bullets: [Bullet]
+    let timeElapsed: Int
+    @Binding var gameOver: Bool
+    let onCollision: () -> Void
+
+    var body: some View {
+        ZStack {
+            // Rocket
+            RocketView()
+                .position(x: rocketPosition, y: UIScreen.main.bounds.height * 0.8)
+
+            // Obstacles
+            ForEach(obstacles) { obstacle in
+                if obstacle.type == .planet {
+                    PlanetObstacleView()
+                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
+                } else if obstacle.type == .satellite {
+                    SateliteObstacleView()
+                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
+                }
+            }
+
+            // Bullets
+            ForEach(bullets) { bullet in
+                Circle()
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(.yellow)
+                    .position(x: bullet.xPosition, y: bullet.yPosition)
+            }
+
+            // Detect tap to shoot
+            Color.clear // Transparent layer for tap gesture
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    shootBullet()
+                }
+        }
+    }
+
+    func shootBullet() {
+        guard !gameOver else { return } // Prevent shooting if game over
+
+        let bullet = Bullet(
+            xPosition: rocketPosition, // Align bullet's position with the rocket's x-coordinate
+            yPosition: UIScreen.main.bounds.height * 0.8 // Start just above the rocket
+        )
+        bullets.append(bullet)
+    }
+}
+struct GameOverView: View {
+    let timeElapsed: Int
+    let onRestart: () -> Void
+
+    var body: some View {
+        VStack {
+            Text("Game Over")
+                .font(.largeTitle)
+                .foregroundColor(.white)
+                .padding()
+
+            Text("You lasted \(timeElapsed) seconds!")
+                .font(.title2)
+                .foregroundColor(.white)
+                .padding()
+
+            Button("Restart") {
+                onRestart()
+            }
+            .font(.title)
+            .padding()
+            .background(Color.white)
+            .cornerRadius(10)
+        }
     }
 }
 
-// Audio delegate class
-class AudioDelegate: NSObject, AVAudioPlayerDelegate {
-    private let onFinish: () -> Void
-
-    init(handler: @escaping () -> Void) {
-        self.onFinish = handler
-    }
-
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        onFinish()
-    }
+// MARK: - Supporting Views and Models
+struct Bullet: Identifiable {
+    let id = UUID()
+    var xPosition: CGFloat
+    var yPosition: CGFloat
 }
 
 struct RocketView: View {
@@ -300,7 +329,20 @@ struct Obstacle: Identifiable {
     let id = UUID()
     var xPosition: CGFloat
     var yPosition: CGFloat
-    var type: ObstacleType // Type of the obstacle
+    var type: ObstacleType
+}
+
+// Audio delegate class
+class AudioDelegate: NSObject, AVAudioPlayerDelegate {
+    private let onFinish: () -> Void
+
+    init(handler: @escaping () -> Void) {
+        self.onFinish = handler
+    }
+
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        onFinish()
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
