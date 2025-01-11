@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SateliteObstacleView: View {
     var body: some View {
-        Rectangle()
+        Image("satellite")
+            .resizable()
             .frame(width: 50, height: 50)
             .foregroundColor(.gray)
     }

@@ -9,4 +9,7 @@
 enum ObstacleType {
     case planet
     case satellite
+    case moon
+    case alien
+    case station
 }

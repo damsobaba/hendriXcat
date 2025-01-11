@@ -3,20 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE078D4D2D32D4FC007D32B4 /* rocketSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */; };
 		CE21930F2D1C884600E5686D /* fond.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CE21930E2D1C884600E5686D /* fond.mp4 */; };
 		CE579C112D07622200B34309 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE579C102D07622200B34309 /* Launch Screen.storyboard */; };
 		CE97CFB82D317179004E023F /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFB72D317174004E023F /* GameOverView.swift */; };
-		CE97CFBA2D3171B7004E023F /* BulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFB92D3171B7004E023F /* BulletView.swift */; };
-		CE97CFBD2D31720C004E023F /* RocketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFBC2D31720C004E023F /* RocketView.swift */; };
-		CE97CFBF2D317234004E023F /* PlanetObstacleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFBE2D317234004E023F /* PlanetObstacleView.swift */; };
-		CE97CFC12D31725C004E023F /* SateliteObstacleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC02D31725C004E023F /* SateliteObstacleView.swift */; };
 		CE97CFC32D317265004E023F /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC22D317265004E023F /* Bullet.swift */; };
-		CE97CFC62D31729F004E023F /* ObstacleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC52D31729F004E023F /* ObstacleType.swift */; };
-		CE97CFC82D3172AE004E023F /* Obstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC72D3172AE004E023F /* Obstacle.swift */; };
 		CE97CFCA2D3172BF004E023F /* AudioDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC92D3172BF004E023F /* AudioDelegate.swift */; };
 		CE97CFCC2D3172DC004E023F /* GameplayVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFCB2D3172DC004E023F /* GameplayVM.swift */; };
 		CE97CFCE2D317331004E023F /* GameplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFCD2D317331004E023F /* GameplayView.swift */; };
@@ -30,16 +25,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = rocketSound.m4a; sourceTree = "<group>"; };
 		CE21930E2D1C884600E5686D /* fond.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fond.mp4; sourceTree = "<group>"; };
 		CE579C102D07622200B34309 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		CE97CFB72D317174004E023F /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
-		CE97CFB92D3171B7004E023F /* BulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletView.swift; sourceTree = "<group>"; };
-		CE97CFBC2D31720C004E023F /* RocketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketView.swift; sourceTree = "<group>"; };
-		CE97CFBE2D317234004E023F /* PlanetObstacleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetObstacleView.swift; sourceTree = "<group>"; };
-		CE97CFC02D31725C004E023F /* SateliteObstacleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SateliteObstacleView.swift; sourceTree = "<group>"; };
 		CE97CFC22D317265004E023F /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
-		CE97CFC52D31729F004E023F /* ObstacleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObstacleType.swift; sourceTree = "<group>"; };
-		CE97CFC72D3172AE004E023F /* Obstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obstacle.swift; sourceTree = "<group>"; };
 		CE97CFC92D3172BF004E023F /* AudioDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDelegate.swift; sourceTree = "<group>"; };
 		CE97CFCB2D3172DC004E023F /* GameplayVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayVM.swift; sourceTree = "<group>"; };
 		CE97CFCD2D317331004E023F /* GameplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayView.swift; sourceTree = "<group>"; };
@@ -53,6 +43,12 @@
 		CEC5A1C52D0466E800BA048B /* space-ship.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "space-ship.wav"; sourceTree = "<group>"; };
 		CEC5A1C72D046CBD00BA048B /* chords.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chords.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CE97CFD22D317951004E023F /* ObstaclesView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ObstaclesView; sourceTree = "<group>"; };
+		CE97CFD42D317990004E023F /* RocketView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RocketView; sourceTree = "<group>"; };
+		CE97CFD52D3179A5004E023F /* Obstacles */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Obstacles; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CEC5A1AE2D0354B100BA048B /* Frameworks */ = {
@@ -69,8 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				CE97CFC92D3172BF004E023F /* AudioDelegate.swift */,
-				CE97CFC72D3172AE004E023F /* Obstacle.swift */,
-				CE97CFC52D31729F004E023F /* ObstacleType.swift */,
+				CE97CFD52D3179A5004E023F /* Obstacles */,
 				CE97CFC22D317265004E023F /* Bullet.swift */,
 			);
 			path = Models;
@@ -82,10 +77,8 @@
 				CE97CFCD2D317331004E023F /* GameplayView.swift */,
 				CE97CFB72D317174004E023F /* GameOverView.swift */,
 				CE97CFD02D317384004E023F /* StartMenuView.swift */,
-				CE97CFC02D31725C004E023F /* SateliteObstacleView.swift */,
-				CE97CFBE2D317234004E023F /* PlanetObstacleView.swift */,
-				CE97CFBC2D31720C004E023F /* RocketView.swift */,
-				CE97CFB92D3171B7004E023F /* BulletView.swift */,
+				CE97CFD22D317951004E023F /* ObstaclesView */,
+				CE97CFD42D317990004E023F /* RocketView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -119,6 +112,7 @@
 			children = (
 				CE21930E2D1C884600E5686D /* fond.mp4 */,
 				CEC5A1C72D046CBD00BA048B /* chords.wav */,
+				CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */,
 				CEC5A1C52D0466E800BA048B /* space-ship.wav */,
 				CEC5A1B42D0354B100BA048B /* HendrixCatApp.swift */,
 				CEC5A1B62D0354B100BA048B /* ContentView.swift */,
@@ -155,6 +149,11 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CE97CFD22D317951004E023F /* ObstaclesView */,
+				CE97CFD42D317990004E023F /* RocketView */,
+				CE97CFD52D3179A5004E023F /* Obstacles */,
 			);
 			name = HendrixCat;
 			productName = HendrixCat;
@@ -202,6 +201,7 @@
 				CEC5A1BD2D0354B200BA048B /* Preview Assets.xcassets in Resources */,
 				CEC5A1C82D046CBD00BA048B /* chords.wav in Resources */,
 				CEC5A1B92D0354B200BA048B /* Assets.xcassets in Resources */,
+				CE078D4D2D32D4FC007D32B4 /* rocketSound.m4a in Resources */,
 				CE579C112D07622200B34309 /* Launch Screen.storyboard in Resources */,
 				CE21930F2D1C884600E5686D /* fond.mp4 in Resources */,
 				CEC5A1C62D0466E800BA048B /* space-ship.wav in Resources */,
@@ -216,18 +216,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE97CFCC2D3172DC004E023F /* GameplayVM.swift in Sources */,
-				CE97CFBD2D31720C004E023F /* RocketView.swift in Sources */,
 				CEC5A1B72D0354B100BA048B /* ContentView.swift in Sources */,
-				CE97CFC82D3172AE004E023F /* Obstacle.swift in Sources */,
 				CE97CFD12D317384004E023F /* StartMenuView.swift in Sources */,
 				CE97CFB82D317179004E023F /* GameOverView.swift in Sources */,
-				CE97CFBA2D3171B7004E023F /* BulletView.swift in Sources */,
 				CE97CFCE2D317331004E023F /* GameplayView.swift in Sources */,
 				CE97CFCA2D3172BF004E023F /* AudioDelegate.swift in Sources */,
 				CEC5A1B52D0354B100BA048B /* HendrixCatApp.swift in Sources */,
-				CE97CFBF2D317234004E023F /* PlanetObstacleView.swift in Sources */,
-				CE97CFC62D31729F004E023F /* ObstacleType.swift in Sources */,
-				CE97CFC12D31725C004E023F /* SateliteObstacleView.swift in Sources */,
 				CE97CFC32D317265004E023F /* Bullet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +352,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HendrixCat/Preview Content\"";
+				DEVELOPMENT_TEAM = 3NYLP3F6GN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -370,7 +365,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
@@ -394,6 +389,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HendrixCat/Preview Content\"";
+				DEVELOPMENT_TEAM = 3NYLP3F6GN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -406,7 +402,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;

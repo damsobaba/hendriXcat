@@ -8,9 +8,9 @@ import SwiftUI
 
 struct RocketView: View {
     var body: some View {
-        Image(systemName: "triangle.fill")
+        Image("rocket")
             .resizable()
-            .frame(width: 40, height: 40)
+            .frame(width: 40, height: 60)
             .foregroundColor(.red)
     }
 }

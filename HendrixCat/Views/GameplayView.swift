@@ -21,7 +21,7 @@ struct GameplayView: View {
     @State private var speed: CGFloat = 5 // Initial speed
     @State private var audioPlayer: AVAudioPlayer? // Audio player instance
     @State private var currentTrackIndex: Int = 0 // Track index
-    private let audioTracks = ["space-ship", "chords"] // List of music tracks
+    private let audioTracks = ["chords"] // List of music tracks
 
     var body: some View {
         ZStack {
@@ -97,7 +97,10 @@ struct GameplayView: View {
 
         // Spawn new obstacles
         if Int.random(in: 0...10) == 0 {
-            let randomType: ObstacleType = Bool.random() ? .planet : .satellite
+            let randomType: ObstacleType = {
+                let types: [ObstacleType] = [.planet, .satellite, .moon, .alien, .station]
+                return types.randomElement() ?? .planet
+            }()
             obstacles.append(Obstacle(
                 xPosition: CGFloat.random(in: 0...UIScreen.main.bounds.width),
                 yPosition: -50,

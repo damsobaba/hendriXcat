@@ -8,19 +8,25 @@
 import SwiftUI
 
 struct StartMenuView: View {
-    let onStart: () -> Void
+    var onStart: () -> Void
 
     var body: some View {
         ZStack {
-            // Background for Start Menu
-            Image("menu_background") // Replace with your menu background image
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
+            // Space-like gradient background
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.blue.opacity(0.8),
+                    Color.purple,
+                    Color.black
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .edgesIgnoringSafeArea(.all) // Extend the gradient to cover the entire screen
 
             VStack {
-                Text("Welcome to Space Adventure!")
-                    .font(.largeTitle)
+                Text("Welcome HendrixCat game ")
+                    .font(.headline)
                     .foregroundColor(.white)
                     .padding()
 
