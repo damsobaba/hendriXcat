@@ -8,6 +8,7 @@
 import SwiftUI
 import AVFoundation
 import AVKit
+import UIKit
 
 struct GameplayView: View {
     let onExit: () -> Void // Exit callback
@@ -22,6 +23,15 @@ struct GameplayView: View {
     @State private var audioPlayer: AVAudioPlayer? // Audio player instance
     @State private var currentTrackIndex: Int = 0 // Track index
     private let audioTracks = ["chords"] // List of music tracks
+    @State private var gameStopAudioPlayer: AVAudioPlayer? // Separate audio player for the game stop sound
+    @State private var showLevelUpBanner: Bool = false
+
+    @State private var level: Int = 1
+    @State private var currentBackground: String = "space_background"
+    @State private var nextBackground: String = "space_background"
+    @State private var isAnimatingBackground: Bool = false
+    var soundEffectPlayer: AVAudioPlayer?
+
 
     var body: some View {
         ZStack {
@@ -31,7 +41,13 @@ struct GameplayView: View {
                 bullets: $bullets,
                 timeElapsed: timeElapsed,
                 gameOver: $gameOver,
+                showLevelUpBanner: $showLevelUpBanner,
+                level: $level,
+                currentBackground: $currentBackground,
+                nextBackground: $nextBackground,
+                isAnimatingBackground: $isAnimatingBackground,
                 onCollision: stopGame
+
             )
 
             if gameOver {
@@ -55,6 +71,7 @@ struct GameplayView: View {
     // MARK: - Game Logic
     func startGame() {
         timeElapsed = 0
+        level = 0
         obstacles = []
         bullets = []
         gameOver = false
@@ -69,8 +86,10 @@ struct GameplayView: View {
     }
     func stopGame() {
         gameOver = true
-        timer?.invalidate() // Stop the timer
-        audioPlayer?.stop() // Stop the music
+        timer?.invalidate()
+        audioPlayer?.stop()
+        playGameStopSound()
+        triggerVibration()
     }
 
     func resetGame() {
@@ -88,6 +107,12 @@ struct GameplayView: View {
         if timeElapsed % 20 == 0 {
             speed += 1
         }
+
+        // Check for level-up condition
+          if timeElapsed % 100 == 0 {
+              triggerLevelUpEffect()
+          }
+
 
         // Move obstacles
         for index in obstacles.indices {
@@ -180,5 +205,87 @@ struct GameplayView: View {
         } catch {
             print("Error loading sound file: \(error.localizedDescription)")
         }
+    }
+
+
+
+      func playLevelUpSound() {
+        guard let soundURL = Bundle.main.url(forResource: "levelUp", withExtension: "wav") else {
+            print("Error: Game stop sound file not found.")
+            return
+        }
+        do {
+            gameStopAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            gameStopAudioPlayer?.prepareToPlay()
+            gameStopAudioPlayer?.play()
+        } catch {
+            print("Error loading game stop sound: \(error.localizedDescription)")
+        }
+    }
+    func playGameStopSound() {
+        guard let soundURL = Bundle.main.url(forResource: "gameStop", withExtension: "wav") else {
+            print("Error: Game stop sound file not found.")
+            return
+        }
+        do {
+            gameStopAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            gameStopAudioPlayer?.prepareToPlay()
+            gameStopAudioPlayer?.play()
+        } catch {
+            print("Error loading game stop sound: \(error.localizedDescription)")
+        }
+    }
+    func triggerVibration() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error)
+    }
+
+
+    // level-up code:
+    func triggerLevelUpEffect() {
+        level += 1 // Increment the level
+        isAnimatingBackground = true // Start background animation
+
+        // Change to the next background
+        currentBackground = nextBackground
+        nextBackground = "background_\(level % 5 + 1)" // Cycle through background images
+
+
+        playLevelUpSound()
+
+        // Show level-up banner
+        showLevelUpBanner = true
+
+        // Hide the banner after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            showLevelUpBanner = false
+        }
+
+        // Stop background animation after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isAnimatingBackground = false
+        }
+    }
+}
+
+struct LevelUpBanner: View {
+    let level: Int
+
+    var body: some View {
+        Text("Level \(level)!")
+            .font(.largeTitle)
+            .bold()
+            .foregroundColor(.yellow)
+            .padding()
+            .background(Color.black.opacity(0.8))
+            .cornerRadius(10)
+            .shadow(radius: 10)
+            .onAppear {
+                triggerVibration()
+            }
+    }
+    func triggerVibration() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
 }

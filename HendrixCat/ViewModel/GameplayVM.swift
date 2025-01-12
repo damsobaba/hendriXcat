@@ -14,7 +14,14 @@ struct GameplayVM: View {
     @Binding var bullets: [Bullet]
     let timeElapsed: Int
     @Binding var gameOver: Bool
+
+    @Binding var showLevelUpBanner: Bool
+    @Binding var level: Int
+    @Binding var currentBackground: String
+    @Binding var nextBackground: String
+    @Binding var isAnimatingBackground: Bool
     let onCollision: () -> Void
+
 
     // Audio Player for the rocket sound
      var rocketSoundPlayer: AVAudioPlayer? = {
@@ -68,12 +75,30 @@ struct GameplayVM: View {
                 BulletView()
                     .position(x: bullet.xPosition, y: bullet.yPosition)
             }
+//
+//            if showLevelUpBanner {
+//                           LevelUpBanner(level: level)
+//                               .transition(.opacity)
+//                               .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY - 100)
+//                       }
 
             // Time Elapsed
             Text("Time: \(timeElapsed)")
                 .font(.headline)
                 .foregroundColor(.white)
                 .position(x: UIScreen.main.bounds.width - 80, y: 40)
+
+            ZStack {
+                           if showLevelUpBanner {
+                               LevelUpBanner(level: level)
+                                   .transition(.opacity)
+                           } else {
+                               Text("Level: \(level)")
+                                   .font(.headline)
+                                   .foregroundColor(.white)
+                           }
+                       }
+                       .position(x: 100, y: 40) // Top-left corner
         }
         .gesture(
             DragGesture()
