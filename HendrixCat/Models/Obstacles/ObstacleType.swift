@@ -6,7 +6,7 @@
 //
 
 
-enum ObstacleType {
+enum ObstacleType: CaseIterable {
     case planet
     case satellite
     case moon

@@ -8,6 +8,8 @@ import SwiftUI
 import AVFAudio
 
 struct GameplayVM: View {
+     var audioManager: AudioManager
+
     @State private var rocketAudioPlayer: AVAudioPlayer?
     @Binding var rocketPosition: CGFloat
     @Binding var obstacles: [Obstacle]
@@ -21,21 +23,6 @@ struct GameplayVM: View {
     @Binding var nextBackground: String
     @Binding var isAnimatingBackground: Bool
     let onCollision: () -> Void
-
-
-    // Audio Player for the rocket sound
-     var rocketSoundPlayer: AVAudioPlayer? = {
-        guard let soundURL = Bundle.main.url(forResource: "rocketSound", withExtension: "m4a") else {
-            print("Error: rocketSound.wav not found in the bundle.")
-            return nil
-        }
-        do {
-            return try AVAudioPlayer(contentsOf: soundURL)
-        } catch {
-            print("Error initializing rocket sound: \(error)")
-            return nil
-        }
-    }()
 
     var body: some View {
         ZStack {
@@ -89,16 +76,16 @@ struct GameplayVM: View {
                 .position(x: UIScreen.main.bounds.width - 80, y: 40)
 
             ZStack {
-                           if showLevelUpBanner {
-                               LevelUpBanner(level: level)
-                                   .transition(.opacity)
-                           } else {
-                               Text("Level: \(level)")
-                                   .font(.headline)
-                                   .foregroundColor(.white)
-                           }
-                       }
-                       .position(x: 100, y: 40) // Top-left corner
+                if showLevelUpBanner {
+                    LevelUpBannerView(level: level)
+                        .transition(.opacity)
+                } else {
+                    Text("Level: \(level)")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                }
+            }
+            .position(x: 100, y: 40) // Top-left corner
         }
         .gesture(
             DragGesture()
@@ -113,21 +100,7 @@ struct GameplayVM: View {
                 yPosition: UIScreen.main.bounds.height * 0.8
             )
             bullets.append(bullet)
-            playRocketSound()
-        }
-    }
-
-    func playRocketSound() {
-        guard let soundURL = Bundle.main.url(forResource: "rocketSound", withExtension: "m4a") else {
-            print("Error: Rocket sound file not found.")
-            return
-        }
-        do {
-            rocketAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            rocketAudioPlayer?.prepareToPlay()
-            rocketAudioPlayer?.play()
-        } catch {
-            print("Error loading rocket sound: \(error.localizedDescription)")
+            audioManager.playSoundEffect(named: "rocketSound", withExtension: "m4a")
         }
     }
 }
