@@ -132,6 +132,7 @@ extension GameplayView {
         for index in bullets.indices {
             bullets[index].yPosition -= 10
         }
+
         bullets.removeAll { $0.yPosition < 0 }
     }
 

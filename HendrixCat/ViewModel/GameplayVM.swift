@@ -16,7 +16,6 @@ struct GameplayVM: View {
     @Binding var bullets: [Bullet]
     let timeElapsed: Int
     @Binding var gameOver: Bool
-
     @Binding var showLevelUpBanner: Bool
     @Binding var level: Int
     @Binding var currentBackground: String
@@ -95,10 +94,7 @@ struct GameplayVM: View {
                 }
         )
         .onTapGesture {
-            let bullet = Bullet(
-                xPosition: rocketPosition,
-                yPosition: UIScreen.main.bounds.height * 0.8
-            )
+            let bullet = Bullet(xPosition: rocketPosition, yPosition: UIScreen.main.bounds.height * 0.8)
             bullets.append(bullet)
             audioManager.playSoundEffect(named: "rocketSound", withExtension: "m4a")
         }

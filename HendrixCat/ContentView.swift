@@ -1,3 +1,10 @@
+//
+//  ContentView.swift
+//  HendrixCat
+//
+//  Created by Adam Mabrouki on 06/12/2024.
+//
+
 import SwiftUI
 
 struct ContentView: View {
