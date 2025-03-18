@@ -13,13 +13,9 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if gameStarted {
-                GameplayView(
-                    onExit: { gameStarted = false } // Return to start menu
-                )
+                GameView(onExit: { gameStarted = false })
             } else {
-                StartMenuView(
-                    onStart: { gameStarted = true } // Start the game
-                )
+                StartMenuView(onStart: { gameStarted = true })
             }
         }
         .animation(.easeInOut, value: gameStarted)

@@ -24,7 +24,8 @@ struct LevelUpBannerView: View {
                 triggerVibration()
             }
     }
-    func triggerVibration() {
+
+    private func triggerVibration() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }

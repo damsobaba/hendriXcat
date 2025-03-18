@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct StartMenuView: View {
-    var onStart: () -> Void
+    let onStart: () -> Void
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .center) {
             // Space-like gradient background
             LinearGradient(
                 gradient: Gradient(colors: [
@@ -24,15 +24,12 @@ struct StartMenuView: View {
             )
             .edgesIgnoringSafeArea(.all) // Extend the gradient to cover the entire screen
 
-            VStack {
-                Text("Welcome HendrixCat game ")
+            VStack(spacing: 20) {
+                Text("Welcome HendrixCat game")
                     .font(.headline)
                     .foregroundColor(.white)
-                    .padding()
 
-                Button(action: {
-                    onStart()
-                }) {
+                Button(action: onStart) {
                     Text("Start Game")
                         .font(.title)
                         .padding()

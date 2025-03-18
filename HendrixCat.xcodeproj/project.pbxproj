@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BBFC6282D89C50D003DABA8 /* GameplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBFC6272D89C507003DABA8 /* GameplayViewModel.swift */; };
 		CE078D4D2D32D4FC007D32B4 /* rocketSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */; };
 		CE21930F2D1C884600E5686D /* fond.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CE21930E2D1C884600E5686D /* fond.mp4 */; };
 		CE579C112D07622200B34309 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE579C102D07622200B34309 /* Launch Screen.storyboard */; };
 		CE97CFB82D317179004E023F /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFB72D317174004E023F /* GameOverView.swift */; };
 		CE97CFC32D317265004E023F /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC22D317265004E023F /* Bullet.swift */; };
 		CE97CFCA2D3172BF004E023F /* AudioDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFC92D3172BF004E023F /* AudioDelegate.swift */; };
-		CE97CFCC2D3172DC004E023F /* GameplayVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFCB2D3172DC004E023F /* GameplayVM.swift */; };
-		CE97CFCE2D317331004E023F /* GameplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFCD2D317331004E023F /* GameplayView.swift */; };
+		CE97CFCC2D3172DC004E023F /* GameplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFCB2D3172DC004E023F /* GameplayView.swift */; };
+		CE97CFCE2D317331004E023F /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFCD2D317331004E023F /* GameView.swift */; };
 		CE97CFD12D317384004E023F /* StartMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97CFD02D317384004E023F /* StartMenuView.swift */; };
 		CE9B94C32D35324100543162 /* LevelUpBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B94C22D35323500543162 /* LevelUpBannerView.swift */; };
 		CE9B94C52D354F9900543162 /* bubblePop.wav in Resources */ = {isa = PBXBuildFile; fileRef = CE9B94C42D354F9900543162 /* bubblePop.wav */; };
@@ -30,14 +31,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7BBFC6272D89C507003DABA8 /* GameplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayViewModel.swift; sourceTree = "<group>"; };
 		CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = rocketSound.m4a; sourceTree = "<group>"; };
 		CE21930E2D1C884600E5686D /* fond.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fond.mp4; sourceTree = "<group>"; };
 		CE579C102D07622200B34309 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		CE97CFB72D317174004E023F /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		CE97CFC22D317265004E023F /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
 		CE97CFC92D3172BF004E023F /* AudioDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDelegate.swift; sourceTree = "<group>"; };
-		CE97CFCB2D3172DC004E023F /* GameplayVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayVM.swift; sourceTree = "<group>"; };
-		CE97CFCD2D317331004E023F /* GameplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayView.swift; sourceTree = "<group>"; };
+		CE97CFCB2D3172DC004E023F /* GameplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayView.swift; sourceTree = "<group>"; };
+		CE97CFCD2D317331004E023F /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		CE97CFD02D317384004E023F /* StartMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuView.swift; sourceTree = "<group>"; };
 		CE9B94C22D35323500543162 /* LevelUpBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUpBannerView.swift; sourceTree = "<group>"; };
 		CE9B94C42D354F9900543162 /* bubblePop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bubblePop.wav; sourceTree = "<group>"; };
@@ -84,7 +86,8 @@
 		CE97CFC42D317278004E023F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CE97CFCD2D317331004E023F /* GameplayView.swift */,
+				CE97CFCD2D317331004E023F /* GameView.swift */,
+				CE97CFCB2D3172DC004E023F /* GameplayView.swift */,
 				CE97CFB72D317174004E023F /* GameOverView.swift */,
 				CE97CFD02D317384004E023F /* StartMenuView.swift */,
 				CE9B94C22D35323500543162 /* LevelUpBannerView.swift */,
@@ -97,7 +100,7 @@
 		CE97CFCF2D317336004E023F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				CE97CFCB2D3172DC004E023F /* GameplayVM.swift */,
+				7BBFC6272D89C507003DABA8 /* GameplayViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -234,12 +237,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE97CFCC2D3172DC004E023F /* GameplayVM.swift in Sources */,
+				CE97CFCC2D3172DC004E023F /* GameplayView.swift in Sources */,
 				CEC5A1B72D0354B100BA048B /* ContentView.swift in Sources */,
 				CE97CFD12D317384004E023F /* StartMenuView.swift in Sources */,
 				CE97CFB82D317179004E023F /* GameOverView.swift in Sources */,
-				CE97CFCE2D317331004E023F /* GameplayView.swift in Sources */,
+				CE97CFCE2D317331004E023F /* GameView.swift in Sources */,
 				CE97CFCA2D3172BF004E023F /* AudioDelegate.swift in Sources */,
+				7BBFC6282D89C50D003DABA8 /* GameplayViewModel.swift in Sources */,
 				CE9B94C32D35324100543162 /* LevelUpBannerView.swift in Sources */,
 				CEC5A1B52D0354B100BA048B /* HendrixCatApp.swift in Sources */,
 				CE97CFC32D317265004E023F /* Bullet.swift in Sources */,

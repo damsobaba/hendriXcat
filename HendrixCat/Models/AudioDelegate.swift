@@ -9,7 +9,6 @@ import AVFoundation
 import AVKit
 
 class AudioManager: NSObject, AVAudioPlayerDelegate, ObservableObject {
-
     private var backgroundAudioPlayer: AVAudioPlayer?
     private var soundEffectPlayers: [AVAudioPlayer] = []
     private let onFinish: (() -> Void)?
@@ -24,6 +23,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate, ObservableObject {
             print("Error: \(soundName).\(ext) not found.")
             return
         }
+
         do {
             backgroundAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
             backgroundAudioPlayer?.delegate = self
@@ -41,6 +41,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate, ObservableObject {
             print("Error: \(soundName).\(ext) not found.")
             return
         }
+
         do {
             let soundEffectPlayer = try AVAudioPlayer(contentsOf: soundURL)
             soundEffectPlayer.delegate = self
@@ -62,6 +63,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate, ObservableObject {
         if let index = soundEffectPlayers.firstIndex(of: player) {
             soundEffectPlayers.remove(at: index) // Remove finished sound effect
         }
+
         onFinish?()
     }
 }
