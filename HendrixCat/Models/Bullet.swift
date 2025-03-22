@@ -7,12 +7,12 @@
 
 import SwiftUI
 
+// TODO: Look to embed in protocol
+
 struct Bullet: Identifiable {
     let id = UUID()
-    var xPosition: CGFloat
-    var yPosition: CGFloat
-    
+    var position: CGPoint
     var frame: CGRect {
-        CGRect(x: xPosition - 5, y: yPosition - 5, width: 10, height: 10)
+        CGRect(x: position.x - 5, y: position.y - 5, width: 10, height: 10)
     }
 }

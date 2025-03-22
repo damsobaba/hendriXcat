@@ -19,38 +19,37 @@ struct GameplayView: View {
                 .edgesIgnoringSafeArea(.all)
 
             // Rocket
-            RocketView()
+            Image("rocket")
+                .resizable()
+                .frame(width: 40, height: 60)
+                .foregroundColor(.red)
                 .position(x: viewModel.rocketPosition.x, y: viewModel.rocketPosition.y)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            viewModel.moveRocket(value: value)
+                        }
+                )
 
             // Obstacles
             ForEach(viewModel.obstacles) { obstacle in
-                switch obstacle.type {
-                case .planet:
-                    PlanetObstacleView()
-                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                case .satellite:
-                    SateliteObstacleView()
-                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                case .moon:
-                    MoonObstacleView()
-                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                case .alien:
-                    AlienObstacleView()
-                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                case .station:
-                    StationObstacleView()
-                        .position(x: obstacle.xPosition, y: obstacle.yPosition)
-                }
+                Image(obstacle.type.toString)
+                    .resizable()
+                    .frame(width: obstacle.width, height: obstacle.height)
+                    .scaledToFit()
+                    .position(x: obstacle.position.x, y: obstacle.position.y)
             }
 
             // Bullets
             ForEach(viewModel.bullets) { bullet in
-                BulletView()
-                    .position(x: bullet.xPosition, y: bullet.yPosition)
+                Circle()
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(.yellow)
+                    .position(x: bullet.position.x, y: bullet.position.y)
             }
 
             // Time Elapsed
-            Text("Distance: \(viewModel.timeElapsed)")
+            Text("Distance: \(viewModel.distance)")
                 .font(.headline)
                 .foregroundColor(.white)
                 .position(x: UIScreen.main.bounds.width - 50, y: 40)
@@ -67,12 +66,6 @@ struct GameplayView: View {
             }
             .position(x: 100, y: 40) // Top-left corner
         }
-        .gesture(
-            DragGesture()
-                .onChanged { value in
-                    viewModel.moveRocket(value: value)
-                }
-        )
         .onTapGesture {
             viewModel.throwBullet()
         }

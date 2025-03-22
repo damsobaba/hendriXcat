@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B4486272D8C6CAC0014440C /* Obstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4486262D8C6CAC0014440C /* Obstacle.swift */; };
 		7BBFC6282D89C50D003DABA8 /* GameplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBFC6272D89C507003DABA8 /* GameplayViewModel.swift */; };
 		CE078D4D2D32D4FC007D32B4 /* rocketSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */; };
 		CE21930F2D1C884600E5686D /* fond.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CE21930E2D1C884600E5686D /* fond.mp4 */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B4486262D8C6CAC0014440C /* Obstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obstacle.swift; sourceTree = "<group>"; };
 		7BBFC6272D89C507003DABA8 /* GameplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayViewModel.swift; sourceTree = "<group>"; };
 		CE078D4C2D32D4FC007D32B4 /* rocketSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = rocketSound.m4a; sourceTree = "<group>"; };
 		CE21930E2D1C884600E5686D /* fond.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fond.mp4; sourceTree = "<group>"; };
@@ -56,12 +58,6 @@
 		CEFC83CD2D34491F00ABDF71 /* levelUp.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = levelUp.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		CE97CFD22D317951004E023F /* ObstaclesView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ObstaclesView; sourceTree = "<group>"; };
-		CE97CFD42D317990004E023F /* RocketView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RocketView; sourceTree = "<group>"; };
-		CE97CFD52D3179A5004E023F /* Obstacles */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Obstacles; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		CEC5A1AE2D0354B100BA048B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -77,8 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				CE97CFC92D3172BF004E023F /* AudioDelegate.swift */,
-				CE97CFD52D3179A5004E023F /* Obstacles */,
 				CE97CFC22D317265004E023F /* Bullet.swift */,
+				7B4486262D8C6CAC0014440C /* Obstacle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -89,10 +85,8 @@
 				CE97CFCD2D317331004E023F /* GameView.swift */,
 				CE97CFCB2D3172DC004E023F /* GameplayView.swift */,
 				CE97CFB72D317174004E023F /* GameOverView.swift */,
-				CE97CFD02D317384004E023F /* StartMenuView.swift */,
 				CE9B94C22D35323500543162 /* LevelUpBannerView.swift */,
-				CE97CFD22D317951004E023F /* ObstaclesView */,
-				CE97CFD42D317990004E023F /* RocketView */,
+				CE97CFD02D317384004E023F /* StartMenuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -137,8 +131,8 @@
 				CE97CFC42D317278004E023F /* Views */,
 				CE97CFCF2D317336004E023F /* ViewModel */,
 				CE97CFBB2D3171D1004E023F /* Models */,
-				CEC5A1B82D0354B200BA048B /* Assets.xcassets */,
 				CEC5A1BA2D0354B200BA048B /* HendrixCat.entitlements */,
+				CEC5A1B82D0354B200BA048B /* Assets.xcassets */,
 				CEC5A1BB2D0354B200BA048B /* Preview Content */,
 				CE579C102D07622200B34309 /* Launch Screen.storyboard */,
 			);
@@ -167,11 +161,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				CE97CFD22D317951004E023F /* ObstaclesView */,
-				CE97CFD42D317990004E023F /* RocketView */,
-				CE97CFD52D3179A5004E023F /* Obstacles */,
 			);
 			name = HendrixCat;
 			productName = HendrixCat;
@@ -240,6 +229,7 @@
 				CE97CFCC2D3172DC004E023F /* GameplayView.swift in Sources */,
 				CEC5A1B72D0354B100BA048B /* ContentView.swift in Sources */,
 				CE97CFD12D317384004E023F /* StartMenuView.swift in Sources */,
+				7B4486272D8C6CAC0014440C /* Obstacle.swift in Sources */,
 				CE97CFB82D317179004E023F /* GameOverView.swift in Sources */,
 				CE97CFCE2D317331004E023F /* GameView.swift in Sources */,
 				CE97CFCA2D3172BF004E023F /* AudioDelegate.swift in Sources */,

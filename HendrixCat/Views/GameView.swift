@@ -18,7 +18,7 @@ struct GameView: View {
                 .disabled(viewModel.gameOver)
 
             if viewModel.gameOver {
-                GameOverView(timeElapsed: viewModel.timeElapsed,
+                GameOverView(distance: viewModel.distance,
                              onRestart: viewModel.startGame,
                              onExit: onExit)
             }

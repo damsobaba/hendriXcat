@@ -10,11 +10,11 @@ import AVFAudio
 import UIKit.UIScreen
 
 class GameplayViewModel: ObservableObject {
-    @Published var rocketPosition: CGPoint
+    @Published var rocketPosition: CGPoint = .zero
     @Published var obstacles: [Obstacle] = []
     @Published var bullets: [Bullet] = []
     @Published var gameOver = false
-    @Published var timeElapsed: Int = 0
+    @Published var distance: Int = 0
     @Published var level = 1
     @Published var showLevelUpBanner = false
 
@@ -27,18 +27,18 @@ class GameplayViewModel: ObservableObject {
     private var speed: CGFloat = 5
     private var currentBackground = "space_background"
     private var nextBackground = "space_background"
-    private var initialRocketPosition: CGPoint
+
+    // TODO: Look to create rocket object singleton + embed in protocol with obstacle and bullet
+    private var rocketFrame: CGRect {
+        CGRect(x: rocketPosition.x - 20, y: rocketPosition.y - 20, width: 40, height: 40)
+    }
+
+    private var initialRocketPosition: CGPoint {
+        CGPoint(x: (screenWidth + screenOffetWidth) / 2, y: screenHeight * 0.8)
+    }
 
     init() {
-        initialRocketPosition = CGPoint(x: (screenWidth + screenOffetWidth) / 2, y: screenHeight * 0.8)
         rocketPosition = initialRocketPosition
-    }
-    
-    private var rocketFrame: CGRect {
-        CGRect(x: rocketPosition.x - 20,
-               y: rocketPosition.y - 20,
-               width: 40,
-               height: 40)
     }
 
     func cleanupResources() {
@@ -58,7 +58,6 @@ class GameplayViewModel: ObservableObject {
                 self.showLevelUpBanner = false
             }
         }
-
     }
 }
 
@@ -79,25 +78,26 @@ extension GameplayViewModel {
         triggerVibration()
         cleanupResources()
     }
-    
+
     private func updateGame() {
         guard !gameOver else { return }
 
-        timeElapsed += 1
+        distance += 1
 
-        if timeElapsed % 100 == 0 {
+        if distance % 100 == 0 {
             speed += 0.5
             triggerLevelUpEffect()
         }
 
-        moveObstacles()
-        moveBullets()
-        checkCollisions()
+        updateObstacles()
+        updateBullets()
+        checkBulletsCollisions()
+        checkRocketCollisions()
     }
 
     private func setNewGameState() {
         rocketPosition = initialRocketPosition
-        timeElapsed = 0
+        distance = 0
         level = 1
         obstacles = []
         bullets = []
@@ -118,22 +118,34 @@ extension GameplayViewModel {
 
 // MARK: - Obstacles
 extension GameplayViewModel {
-    private func spawnObstacle() {
-        let randomType = ObstacleType.allCases.randomElement() ?? .planet
-        obstacles.append(Obstacle(xPosition: CGFloat.random(in: screenOffetWidth...screenWidth),
-                                  yPosition: -50,
-                                  type: randomType))
-    }
-
-    private func moveObstacles() {
+    private func updateObstacles() {
+        // Moving obstacles
         for index in obstacles.indices {
-            obstacles[index].yPosition += speed
+            obstacles[index].position.y += speed
         }
 
-        obstacles.removeAll { $0.yPosition > UIScreen.main.bounds.height }
+        // Deleting objects that go out of screen
+        obstacles.removeAll { $0.position.y > UIScreen.main.bounds.height }
 
+        // Spawning obstacles
         if Int.random(in: 0...(20 - level)) == 0 {
-            spawnObstacle()
+            generateObstacle()
+        }
+    }
+
+    private func generateObstacle() {
+        let randomType = ObstacleType.allCases.randomElement() ?? .planet
+        let newObstaclePosition = CGPoint(x: CGFloat.random(in: screenOffetWidth...screenWidth), y: -50)
+        let obstacleSize: CGFloat = randomType == .satelliteBlue ? 50 : 40
+        let newObstacle = Obstacle(type: randomType,
+                                   position: newObstaclePosition,
+                                   width: obstacleSize,
+                                   height: obstacleSize)
+
+        // Preventing obstacles to overlap by spawning only in empty spaces
+        let doesOverlap = obstacles.contains(where: { $0.frame.intersects(newObstacle.frame) })
+        if !doesOverlap {
+            obstacles.append(newObstacle)
         }
     }
 }
@@ -141,25 +153,27 @@ extension GameplayViewModel {
 
 // MARK: - Bullets
 extension GameplayViewModel {
-    func throwBullet() {
-        let bullet = Bullet(xPosition: rocketPosition.x, yPosition: rocketPosition.y)
-        bullets.append(bullet)
-        audioManager.playSoundEffect(named: "rocketSound", withExtension: "m4a")
-    }
-
-    private func moveBullets() {
+    private func updateBullets() {
+        // Moving bullets
         for index in bullets.indices {
-            bullets[index].yPosition -= 15
+            bullets[index].position.y -= 15
         }
 
-        bullets.removeAll { $0.yPosition < 0 }
+        // Deleting bullets that go out of screen
+        bullets.removeAll { $0.position.y < -50 }
+    }
+
+    func throwBullet() {
+        let bullet = Bullet(position: rocketPosition)
+        bullets.append(bullet)
+        audioManager.playSoundEffect(named: "rocketSound", withExtension: "m4a")
     }
 }
 
 
 // MARK: - Collisions
 extension GameplayViewModel {
-    private func checkCollisions() {
+    private func checkBulletsCollisions() {
         var bulletsToRemove: Set<UUID> = []
         var obstaclesToRemove: Set<UUID> = []
 
@@ -169,15 +183,13 @@ extension GameplayViewModel {
                     bulletsToRemove.insert(bullet.id)
                     obstaclesToRemove.insert(obstacle.id)
                     audioManager.playSoundEffect(named: "bubblePop")
-                    timeElapsed += 10
+                    distance += 10
                 }
             }
         }
 
         bullets.removeAll { bulletsToRemove.contains($0.id) }
         obstacles.removeAll { obstaclesToRemove.contains($0.id) }
-
-        checkRocketCollisions()
     }
 
     private func checkRocketCollisions() {

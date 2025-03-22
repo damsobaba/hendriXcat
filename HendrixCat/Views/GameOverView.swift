@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameOverView: View {
-    let timeElapsed: Int
+    let distance: Int
     let onRestart: () -> Void
     let onExit: () -> Void
 
@@ -18,7 +18,7 @@ struct GameOverView: View {
                 .font(.largeTitle)
                 .foregroundColor(.white)
 
-            Text("You lasted \(timeElapsed) seconds!")
+            Text("You lasted \(distance) seconds!")
                 .font(.title2)
                 .foregroundColor(.white)
 
@@ -55,7 +55,7 @@ struct GameOverView: View {
     }
 
     private func shareOnTwitter() {
-        let tweetText = "I lasted \(timeElapsed) seconds in Space Adventure! 🚀 #SpaceAdventureGame"
+        let tweetText = "I lasted \(distance) seconds in Space Adventure! 🚀 #SpaceAdventureGame"
         let tweetUrl = "https://twitter.com/intent/tweet?text=\(tweetText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
 
         if let url = URL(string: tweetUrl) {
